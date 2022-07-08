@@ -1,0 +1,33 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+public class PlayerController : MonoBehaviour
+{
+    public NavMeshAgent agent;
+
+     MenuScript menuScript;
+    [SerializeField] GameObject menu;
+
+    void Awake()
+    {
+        menuScript = menu.GetComponent<MenuScript>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(menuScript.getIsButtonPressed())
+        { 
+            string target = menuScript.getLocation();
+
+            Ray movePosition = Camera.main.ScreenPointToRay(GameObject.Find(target).transform.position);
+
+            if (Physics.Raycast(movePosition, out var hitInfo))
+            {
+                agent.SetDestination(hitInfo.point);
+            }
+        }
+    }
+}
